@@ -3,56 +3,94 @@ package ru.skillbranch.devintensive.utils
 object Utils {
     fun parseFullName(fullName:String?):Pair<String?,String?>{
         val parts:List<String>?=fullName?.split( " ")
-        val firstName=parts?.getOrNull(0)
-        val lastName=parts?.getOrNull(1)
+        var firstName=parts?.getOrNull(0)
+        if(firstName.isNullOrEmpty() || firstName.isNullOrBlank()) {
+            firstName = null
+        }
+        var lastName=parts?.getOrNull(1)
+        if(lastName.isNullOrEmpty() || lastName.isNullOrBlank()) {
+            lastName = null
+        }
         return Pair(firstName,lastName)
     }
 
-    fun transliteration(payload: String): String {
-        return payload.replace(Regex("[абвгдеёжзийклмнопрстуфхцчшщъыьэюя ]")) {
+    fun transliteration(payload: String,divider : String=" "): String {
+        return payload.replace(Regex("[абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ ]")) {
             when (it.value) {
-                "а" -> "a"
-                "б" -> "b"
-                "в" -> "v"
-                "г" -> "g"
-                "д" -> "d"
-                "е" -> "e"
-                "ё" -> "e"
-                "ж" -> "g"
-                "з" -> "z"
-                "и" -> "i"
-                "й" -> "i"
-                "к" -> "k"
-                "л" -> "l"
-                "м" -> "m"
-                "н" -> "n"
-                "о" -> "o"
-                "п" -> "p"
-                "р" -> "r"
-                "с" -> "s"
-                "т" -> "t"
-                "у" -> "u"
-                "ф" -> "f"
-                "х" -> "kh"
-                "ц" -> "c"
-                "ч" -> "ch"
-                "ш" -> "sch"
-                "щ" -> "sch"
-                "ъ" -> ""
-                "ы" -> "i"
-                "ь" -> ""
-                "э" -> "e"
-                "ю" -> "u"
-                "я" -> "ya"
-                " " -> "_"
-                else -> it.value
+            "а"-> "a"
+            "б"-> "b"
+            "в"-> "v"
+            "г"->"g"
+            "д"->"d"
+            "е","ё","э"->"e"
+            "ж"->"zh"
+            "з"->"z"
+            "и","й","ы"->"i"
+            "к"->"k"
+            "л"->"l"
+            "м"->"m"
+            "н"->"n"
+            "о"->"o"
+            "п"->"p"
+            "р"->"r"
+            "с"->"s"
+            "т"-> "t"
+            "у"-> "u"
+            "ф"-> "f"
+            "х"-> "h"
+            "ц"-> "c"
+            "ч"-> "ch"
+            "ш"-> "sh"
+            "щ"-> "sh'"
+            "ъ","ь"-> ""
+            "ю"-> "yu"
+            "я"-> "ya"
+            "A"-> "A"
+            "Б"-> "B"
+            "В"-> "V"
+            "Г"-> "G"
+            "Д"-> "D"
+            "Е","Ё","Э"-> "E"
+            "Ж"-> "ZH"
+            "З"-> "Z"
+            "И","Й","Ы"-> "I"
+            "К"-> "K"
+            "Л"-> "L"
+            "М"-> "M"
+            "Н"-> "N"
+            "О"-> "O"
+            "П"-> "P"
+            "Р"-> "R"
+            "С"-> "S"
+            "Т"-> "T"
+            "У"-> "U"
+            "Ф"-> "F"
+            "Х"-> "H"
+            "Ц"-> "C"
+            "Ч"-> "CH"
+            "Ш"-> "SH"
+            "Щ"-> "SH'"
+            "Ъ","Ь"-> ""
+            "Э"-> "E"
+            "Ю"-> "YU"
+            "Я"-> "YA"
+            " " -> divider
+            else -> it.value
             }
         }
     }
 
-    fun toInitials(firstName: String?, lastName: String?    ): String {
-        val f = firstName?.get(0)
-        val i = lastName?.get(0)
-        return "$f$i"
+    fun toInitials(firstName: String?, lastName: String?    ): String? {
+        if (firstName?.trim() == "" && lastName?.trim() == "" ) return null
+        if (firstName == null && lastName == null) return null
+
+        val f = firstName?.getOrNull(0)?.toUpperCase()
+        val i = lastName?.getOrNull(0)?.toUpperCase()
+            val inif = if (f == null) "" else f
+            val inii = if (i == null) "" else i
+
+            if (f != null || i != null) return "${inif}${inii}"
+            return "$f$i"
+
     }
 }
