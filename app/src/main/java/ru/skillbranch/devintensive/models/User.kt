@@ -3,7 +3,7 @@ package ru.skillbranch.devintensive.models
 import ru.skillbranch.devintensive.utils.Utils
 import java.util.*
 
-class User (
+data class User (
     val id:String,
     var firstName:String?,
     var lastName:String?,
@@ -31,8 +31,8 @@ class User (
             return User(id="$lastId",firstName = firstName,lastName = lastName)
         }
     }
-    data class Builder(
-        var id:String,
+    class Builder(
+        var id:String?=null,
         var firstName:String?=null,
         var lastName:String?=null,
         var avatar:String?=null,
@@ -49,7 +49,7 @@ class User (
         fun respect(respect: Int) = apply { this.respect = respect }
         fun lastVisit(lastVisit: Date) = apply { this.lastVisit = lastVisit }
         fun isOnline(isOnline: Boolean) = apply { this.isOnline = isOnline }
-        fun build() = User(id, firstName, lastName, avatar, rating, respect, lastVisit, isOnline)
+        fun build() = User(id.toString(), firstName, lastName, avatar, rating, respect, lastVisit, isOnline)
     }
 }
 
