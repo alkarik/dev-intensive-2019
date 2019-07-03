@@ -118,8 +118,6 @@ fun Date.humanizeDiff(date:Date = Date()):String{
     return  otv
 }
 
-
-
 enum class TimeUnits{
     SECOND,
     MINUTE,
