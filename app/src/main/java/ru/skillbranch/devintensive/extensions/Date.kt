@@ -118,48 +118,50 @@ fun Date.humanizeDiff(date:Date = Date()):String{
     return  otv
 }
 
-fun TimeUnits.plural(cnt:Int=0):String{
-    val t=this
-    val timeUnit = when (cnt%100) {
-        1 -> when (t) {
-            TimeUnits.SECOND -> "секунду"
-            TimeUnits.MINUTE -> "минуту"
-            TimeUnits.HOUR -> "час"
-            TimeUnits.DAY -> "день"
-        }
-        in 2..4  -> when (t) {
-            TimeUnits.SECOND -> "секунды"
-            TimeUnits.MINUTE -> "минуты"
-            TimeUnits.HOUR -> "часа"
-            TimeUnits.DAY -> "дня"
-        }
-        in 12..14 ->when(t){
-            TimeUnits.SECOND -> "секунд"
-            TimeUnits.MINUTE -> "минут"
-            TimeUnits.HOUR -> "часов"
-            TimeUnits.DAY -> "дней"
-        }
-        else -> when (cnt%10) {
-            in 2..4 ->when(t){
-                TimeUnits.SECOND -> "секунды"
-                TimeUnits.MINUTE -> "минуты"
-                TimeUnits.HOUR -> "часа"
-                TimeUnits.DAY -> "дня"
-            }
-            else -> when(t){
-            TimeUnits.SECOND -> "секунд"
-            TimeUnits.MINUTE -> "минут"
-            TimeUnits.HOUR -> "часов"
-            TimeUnits.DAY -> "дней"
-            }
-        }
-    }
-    return "${cnt} ${timeUnit}"
-}
+
 
 enum class TimeUnits{
     SECOND,
     MINUTE,
     HOUR,
-    DAY
+    DAY;
+
+    fun plural(cnt:Int=0):String{
+        val t=this
+        val timeUnit = when (cnt%100) {
+            1 -> when (t) {
+                TimeUnits.SECOND -> "секунду"
+                TimeUnits.MINUTE -> "минуту"
+                TimeUnits.HOUR -> "час"
+                TimeUnits.DAY -> "день"
+            }
+            in 2..4  -> when (t) {
+                TimeUnits.SECOND -> "секунды"
+                TimeUnits.MINUTE -> "минуты"
+                TimeUnits.HOUR -> "часа"
+                TimeUnits.DAY -> "дня"
+            }
+            in 12..14 ->when(t){
+                TimeUnits.SECOND -> "секунд"
+                TimeUnits.MINUTE -> "минут"
+                TimeUnits.HOUR -> "часов"
+                TimeUnits.DAY -> "дней"
+            }
+            else -> when (cnt%10) {
+                in 2..4 ->when(t){
+                    TimeUnits.SECOND -> "секунды"
+                    TimeUnits.MINUTE -> "минуты"
+                    TimeUnits.HOUR -> "часа"
+                    TimeUnits.DAY -> "дня"
+                }
+                else -> when(t){
+                    TimeUnits.SECOND -> "секунд"
+                    TimeUnits.MINUTE -> "минут"
+                    TimeUnits.HOUR -> "часов"
+                    TimeUnits.DAY -> "дней"
+                }
+            }
+        }
+        return "${cnt} ${timeUnit}"
+    }
 }
