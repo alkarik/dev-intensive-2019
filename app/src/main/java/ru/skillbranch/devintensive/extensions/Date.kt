@@ -118,7 +118,7 @@ fun Date.humanizeDiff(date:Date = Date()):String{
     return  otv
 }
 
-fun TimeUnits.plural(cnt:Int):String{
+fun TimeUnits.plural(cnt:Int=0):String{
     val t=this
     val timeUnit = when (cnt%100) {
         1 -> when (t) {
