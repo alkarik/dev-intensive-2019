@@ -118,6 +118,31 @@ fun Date.humanizeDiff(date:Date = Date()):String{
     return  otv
 }
 
+fun TimeUnits.plural(cnt:Int):String{
+    val t=this
+    val timeUnit = when (cnt%10) {
+        1 -> when (t) {
+            TimeUnits.SECOND -> "секунду"
+            TimeUnits.MINUTE -> "минуту"
+            TimeUnits.HOUR -> "час"
+            TimeUnits.DAY -> "день"
+        }
+        in 2..4 -> when (t) {
+            TimeUnits.SECOND -> "секунды"
+            TimeUnits.MINUTE -> "минуты"
+            TimeUnits.HOUR -> "часа"
+            TimeUnits.DAY -> "дня"
+        }
+        else -> when (t) {
+            TimeUnits.SECOND -> "секунд"
+            TimeUnits.MINUTE -> "минут"
+            TimeUnits.HOUR -> "часов"
+            TimeUnits.DAY -> "дней"
+        }
+    }
+    return "${cnt} ${timeUnit}"
+}
+
 enum class TimeUnits{
     SECOND,
     MINUTE,
