@@ -32,11 +32,11 @@ class Bender (var status: Status =Status.NORMAL, var question: Question=Question
             }
             Question.IDLE -> ""//игнорировать валидацию
         }
-        if(dob!="") return "${dob}\n${question.question}" to status.color
+        if(dob!="") return "${dob}${question.question}" to status.color
 
         return if(question.answer.contains(answer)){
             if (question!=Question.IDLE) question=question.nextQuestion()
-            "Отлично - ты справился!\n${question.question}" to status.color
+            "Отлично - ты справился\n${question.question}" to status.color
         }else{
             wa++
             if (wa == 4) {
@@ -47,7 +47,7 @@ class Bender (var status: Status =Status.NORMAL, var question: Question=Question
             } else {
             status=status.nextStatus()
 
-           "Это не правильный ответ!\n" +
+           "Это не правильный ответ\n" +
                     "${question.question}" to status.color
         }
         }
@@ -69,7 +69,7 @@ class Bender (var status: Status =Status.NORMAL, var question: Question=Question
     }
 
     enum class Question( val question:String, val answer:List<String>){
-        NAME ("Как меня зовут ?", listOf("Бендер","Bender")){
+        NAME ("Как меня зовут?", listOf("Бендер","Bender")){
             override fun nextQuestion(): Question=PROFESSION
         },
         PROFESSION("Назови мою профессию?", listOf("сгибальщик","bender")){
