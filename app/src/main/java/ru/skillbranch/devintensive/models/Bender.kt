@@ -35,8 +35,8 @@ class Bender (var status: Status =Status.NORMAL, var question: Question=Question
         if(dob!="") return "${dob}\n${question.question}" to status.color
 
         return if(question.answer.contains(answer)){
-            question=question.nextQuestion()
-            "Отлично - это правильный ответ!\n${question.question}" to status.color
+            if (question!=Question.IDLE) question=question.nextQuestion()
+            "Отлично - ты справился!\n${question.question}" to status.color
         }else{
             wa++
             if (wa == 4) {
