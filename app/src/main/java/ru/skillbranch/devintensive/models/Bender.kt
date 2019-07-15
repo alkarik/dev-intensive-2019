@@ -1,7 +1,7 @@
 package ru.skillbranch.devintensive.models
 
 class Bender (var status: Status =Status.NORMAL, var question: Question=Question.NAME){
-
+    var wa:Int = 0
     fun askQuestion():String=when(question){
        Question.NAME  -> Question.NAME.question
        Question.PROFESSION -> Question.PROFESSION.question
@@ -15,30 +15,20 @@ class Bender (var status: Status =Status.NORMAL, var question: Question=Question
         var dob:String=""
         when(question) {
             Question.NAME -> {
-                if(answer[0]!=answer[0].toUpperCase()){
-                    dob="Имя должно начинаться с заглавной буквы\n"
-                }
+                if(answer[0]!=answer[0].toUpperCase()){dob="Имя должно начинаться с заглавной буквы\n"}
             }
             Question.PROFESSION ->{
-                if(answer[0]==answer[0].toUpperCase()){
-                    dob="Профессия должна начинаться со строчной буквы\n"
-                }
+                if(answer[0]==answer[0].toUpperCase()){dob="Профессия должна начинаться со строчной буквы\n"}
             }
             Question.MATERIAL ->{
-                if("\\d+".toRegex().containsMatchIn(answer)){
-                    dob="Материал не должен содержать цифр\n"
-                }
+                if("\\d+".toRegex().containsMatchIn(answer)){dob="Материал не должен содержать цифр\n"}
             }
             Question.BDAY ->
             {
-                if(!answer.matches(Regex("\\d+"))){
-                    dob="Год моего рождения должен содержать только цифры\n"
-                }
+                if(!answer.matches(Regex("\\d+"))){dob="Год моего рождения должен содержать только цифры\n"}
             }
             Question.SERIAL -> {
-                if (!answer.matches(Regex("\\d{7}"))) {
-                    dob = "Серийный номер содержит только цифры, и их 7\n"
-                }
+                if (!answer.matches(Regex("\\d{7}"))) {dob = "Серийный номер содержит только цифры, и их 7\n"}
             }
             Question.IDLE -> ""//игнорировать валидацию
         }
@@ -48,10 +38,18 @@ class Bender (var status: Status =Status.NORMAL, var question: Question=Question
             question=question.nextQuestion()
             "Отлично - это правильный ответ!\n${question.question}" to status.color
         }else{
+            wa++
+            if (wa == 4) {
+                status = Status.NORMAL
+                question = Question.NAME
+                wa = 0
+                "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
+            } else {
             status=status.nextStatus()
 
            "Это не правильный ответ!\n" +
                     "${question.question}" to status.color
+        }
         }
     }
 
