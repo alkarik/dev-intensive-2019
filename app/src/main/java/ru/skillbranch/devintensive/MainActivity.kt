@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener{clk()}
 
-        messageEt.setOnEditorActionListener() { v, actionId, event ->
+        messageEt.setOnEditorActionListener { v, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
                     clk();hideKeyboard(); true

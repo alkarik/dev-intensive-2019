@@ -1,7 +1,7 @@
 package ru.skillbranch.devintensive.models
 
 class Bender (var status: Status =Status.NORMAL, var question: Question=Question.NAME){
-    var wa:Int = 0
+    var wa:Int = 1
     fun askQuestion():String=when(question){
        Question.NAME  -> Question.NAME.question
        Question.PROFESSION -> Question.PROFESSION.question
@@ -12,37 +12,19 @@ class Bender (var status: Status =Status.NORMAL, var question: Question=Question
     }
 
     fun listenAnswer(answer:String) : Pair<String, Triple<Int,Int,Int>>{
-        var dob:String=""
-        when(question) {
-            Question.NAME -> {
-                if(answer[0]!=answer[0].toUpperCase()){dob="Имя должно начинаться с заглавной буквы\n"}
-            }
-            Question.PROFESSION ->{
-                if(answer[0]==answer[0].toUpperCase()){dob="Профессия должна начинаться со строчной буквы\n"}
-            }
-            Question.MATERIAL ->{
-                if("\\d+".toRegex().containsMatchIn(answer)){dob="Материал не должен содержать цифр\n"}
-            }
-            Question.BDAY ->
-            {
-                if(!answer.matches(Regex("\\d+"))){dob="Год моего рождения должен содержать только цифры\n"}
-            }
-            Question.SERIAL -> {
-                if (!answer.matches(Regex("\\d{7}"))) {dob = "Серийный номер содержит только цифры, и их 7\n"}
-            }
-            Question.IDLE -> ""//игнорировать валидацию
-        }
-        if(dob!="") return "${dob}${question.question}" to status.color
+
+        var dob = valid(answer, question)
+        if(dob.isNotEmpty()) return "$dob\n${question.question}" to status.color
 
         return if(question.answer.contains(answer)){
             if (question!=Question.IDLE) question=question.nextQuestion()
             "Отлично - ты справился\n${question.question}" to status.color
         }else{
             wa++
-            if (wa == 4) {
+            if (wa >3) {
                 status = Status.NORMAL
                 question = Question.NAME
-                wa = 0
+                wa = 1
                 "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
             } else {
             status=status.nextStatus()
@@ -50,6 +32,35 @@ class Bender (var status: Status =Status.NORMAL, var question: Question=Question
            "Это неправильный ответ\n" +
                     "${question.question}" to status.color
         }
+        }
+    }
+
+    private fun valid(answer: String, question: Question): String {
+        return when (question) {
+            Question.NAME -> {
+                if (answer.isNotEmpty() && answer[0] != answer[0].toUpperCase()) {
+                  "Имя должно начинаться с заглавной буквы"
+                }else{""}
+            }
+            Question.PROFESSION -> {
+                if (answer.isNotEmpty() && answer[0] == answer[0].toUpperCase()) {
+                    "Профессия должна начинаться со строчной буквы"
+                }else{""}
+            }
+            Question.MATERIAL -> {
+                if ("\\d+".toRegex().containsMatchIn(answer)) {"Материал не должен содержать цифр"}else{""}
+            }
+            Question.BDAY -> {
+                if (!answer.matches(Regex("\\d+"))) {
+                    "Год моего рождения должен содержать только цифры"
+                }else{""}
+            }
+            Question.SERIAL -> {
+                if (!answer.matches(Regex("\\d{7}"))) {
+                    "Серийный номер содержит только цифры, и их 7"
+                }else{""}
+            }
+            Question.IDLE -> ""//игнорировать валидацию
         }
     }
 
