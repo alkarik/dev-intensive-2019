@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.extensions.hideKeyboard
 import ru.skillbranch.devintensive.models.Bender
 
-class MainActivity : AppCompatActivity()
+class MainActivity : AppCompatActivity(), View.OnClickListener
 {
     lateinit var benderImage: ImageView
     lateinit var textTxt: TextView
@@ -93,7 +93,13 @@ class MainActivity : AppCompatActivity()
         Log.d("M_MainActivity","onSaveInstanceState ${benderObj.status.name} ${benderObj.question.name}" )
     }
 
-   private  fun clk() {
+    override fun onClick(v: View) {
+        if (v.id == R.id.iv_send) {
+            clk()
+        }
+    }
+
+   fun clk() {
             val(phrase,color)=benderObj.listenAnswer(messageEt.text.toString())
             messageEt.setText("")
             val(r,g,b)=color
