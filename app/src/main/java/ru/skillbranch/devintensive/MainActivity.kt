@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.extensions.hideKeyboard
 import ru.skillbranch.devintensive.models.Bender
 
-class MainActivity : AppCompatActivity(), View.OnClickListener
+class MainActivity : AppCompatActivity()
 {
     lateinit var benderImage: ImageView
     lateinit var textTxt: TextView
@@ -44,12 +44,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
         benderImage.setColorFilter(Color.rgb(r,g,b),PorterDuff.Mode.MULTIPLY)
 
         textTxt.text = benderObj.askQuestion()
-        sendBtn.setOnClickListener(this)
+        sendBtn.setOnClickListener{clk()}
 
         messageEt.setOnEditorActionListener() { v, actionId, event ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
-                    onClick(sendBtn);hideKeyboard(); true
+                    clk();hideKeyboard(); true
                 }
                 else -> false
             }
@@ -93,13 +93,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener
         Log.d("M_MainActivity","onSaveInstanceState ${benderObj.status.name} ${benderObj.question.name}" )
     }
 
-    override fun onClick(v: View?) {
-        if(v?.id==R.id.iv_send){
+   private  fun clk() {
             val(phrase,color)=benderObj.listenAnswer(messageEt.text.toString())
             messageEt.setText("")
             val(r,g,b)=color
             benderImage.setColorFilter(Color.rgb(r,g,b),PorterDuff.Mode.MULTIPLY)
             textTxt.text=phrase
-        }
-    }
+          }
 }
